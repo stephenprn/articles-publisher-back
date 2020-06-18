@@ -1,10 +1,11 @@
-from flask import request
+from flask import request, abort
 from json import dumps
 from functools import wraps
 
 from utils.utils_date import datetime_handler
 
 # if nbr_results_default is specified, we try to get nbr_results
+
 
 def pagination(nbr_results_default=None):
     def decorator(function):
@@ -16,8 +17,7 @@ def pagination(nbr_results_default=None):
                 if page_nbr == None or page_nbr == '':
                     page_nbr = 0
             except Exception as e:
-                print(e)
-                page_nbr = 0
+                abort(400, 'Page number is required: page_nbr')
 
             if nbr_results_default != None:
                 try:
@@ -26,7 +26,6 @@ def pagination(nbr_results_default=None):
                     if nbr_results == None or nbr_results == '':
                         nbr_results = nbr_results_default
                 except Exception as e:
-                    print(e)
                     nbr_results = nbr_results_default
 
                 kwargs["nbr_results"] = nbr_results
@@ -40,13 +39,32 @@ def pagination(nbr_results_default=None):
 
     return decorator
 
-def to_json():
+# convert objects or lists to json
+
+
+def to_json(paginated=False):
     def decorator(function):
         @wraps(function)
         def wrapper(*args, **kwargs):
             res = function(*args, **kwargs)
 
-            return dumps(res, default=datetime_handler)
+            if paginated:
+                data = res['data']
+
+            if isinstance(data, list):
+                data_dict = [elt.to_dict() for elt in data]
+            else:
+                data_dict = data.to_dict()
+
+            if not paginated:
+                return dumps(data_dict, default=datetime_handler)
+            else:
+                return dumps({
+                    'total': res['total'],
+                    'data': data_dict
+                }, default=datetime_handler)
+
+            return
 
         wrapper.__name__ = function.__name__
         return wrapper

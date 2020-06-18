@@ -7,4 +7,5 @@ def get_current_date():
 def datetime_handler(x):
     if isinstance(x, datetime.datetime):
         return x.isoformat()
+    
     raise TypeError("Unknown type")

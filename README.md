@@ -19,6 +19,10 @@ python -m pip freeze > requirements.txt
 ```
 source venv/bin/activate
 ```
+- Set dev environment variables
+```
+. ./env_variables.sh
+```
 
 ## Project structure
 

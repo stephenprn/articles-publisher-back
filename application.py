@@ -1,12 +1,18 @@
 from flask import Flask
+from os import environ
+from flask_jwt import JWT
 
 from shared.db import db
+from services.service_admin import init_users
+from services.service_auth import authenticate, identity
 
 
 def create_app():
     """Construct the core application."""
     app = Flask(__name__)
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///application.db"
+    app.config["SQLALCHEMY_DATABASE_URI"] = environ.get("SQLALCHEMY_DATABASE_URI")
+    app.config["SECRET_KEY"] = environ.get("SECRET_KEY")
+    app.config["JWT_AUTH_URL_RULE"] = environ.get("JWT_AUTH_URL_RULE")
 
     db.init_app(app)
 
@@ -15,14 +21,17 @@ def create_app():
         from routes.application_auth import application_auth
         from routes.application_admin import application_admin
 
-        app.register_blueprint(application_auth, url_prefix="/auth")
+        app.register_blueprint(application_auth, url_prefix="/auth ")
         app.register_blueprint(application_admin, url_prefix="/admin")
 
         db.create_all()  # Create sql tables for our data models
+        init_users()
 
         return app
 
+
 app = create_app()
+jwt = JWT(app, authenticate, identity)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
