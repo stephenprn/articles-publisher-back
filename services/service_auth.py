@@ -1,4 +1,3 @@
-from flask import abort
 from sqlalchemy.orm import load_only
 
 from models.user import User

@@ -10,7 +10,8 @@ from services.service_auth import authenticate, identity
 def create_app():
     """Construct the core application."""
     app = Flask(__name__)
-    app.config["SQLALCHEMY_DATABASE_URI"] = environ.get("SQLALCHEMY_DATABASE_URI")
+    app.config["SQLALCHEMY_DATABASE_URI"] = environ.get(
+        "SQLALCHEMY_DATABASE_URI")
     app.config["SECRET_KEY"] = environ.get("SECRET_KEY")
     app.config["JWT_AUTH_URL_RULE"] = environ.get("JWT_AUTH_URL_RULE")
 
@@ -20,9 +21,11 @@ def create_app():
         # blueprints init
         from routes.application_auth import application_auth
         from routes.application_admin import application_admin
+        from routes.application_article import application_article
 
         app.register_blueprint(application_auth, url_prefix="/auth ")
         app.register_blueprint(application_admin, url_prefix="/admin")
+        app.register_blueprint(application_article, url_prefix="/article")
 
         db.create_all()  # Create sql tables for our data models
         init_users()

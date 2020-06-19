@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint
 
 from shared.db import db
 from services import service_auth

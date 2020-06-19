@@ -6,9 +6,7 @@ from shared.annotations import to_json
 
 
 def init_users():
-    admin_exists = db.session.query(
-        db.session.query(User).filter_by(username='admin').exists()
-    ).scalar()
+    admin_exists = db.session.query(User.id).filter_by(username='admin').scalar() is not None
 
     if admin_exists:
         return
