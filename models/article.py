@@ -1,5 +1,6 @@
 from sqlalchemy import inspect
 from uuid import uuid4
+from sqlalchemy.orm import load_only
 
 from shared.db import db
 from utils import utils_date, utils_hash
@@ -7,8 +8,7 @@ from utils import utils_date, utils_hash
 
 class Article(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    uuid = db.Column(db.String(), default=str(
-        uuid4()), unique=True, nullable=False)
+    uuid = db.Column(db.String(), unique=True, nullable=False)
 
     title = db.Column(db.String(100), nullable=False)
     body = db.Column(db.Text)
@@ -20,6 +20,7 @@ class Article(db.Model):
     def __init__(self, title: str, body: str):
         self.title = title
         self.body = body
+        self.uuid = str(uuid4())
 
     def __repr__(self):
         state = inspect(self)

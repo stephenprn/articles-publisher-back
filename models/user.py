@@ -7,8 +7,7 @@ from utils import utils_date, utils_hash
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    uuid = db.Column(db.String(), default=str(
-        uuid4()), unique=True, nullable=False)
+    uuid = db.Column(db.String(), unique=True, nullable=False)
 
     username = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
@@ -27,6 +26,8 @@ class User(db.Model):
 
         self.password = pw_salt[0]
         self.salt = pw_salt[1]
+
+        self.uuid = str(uuid4())
 
     def __repr__(self):
         state = inspect(self)

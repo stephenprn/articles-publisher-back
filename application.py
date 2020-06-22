@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 from os import environ
 from flask_jwt import JWT
 
@@ -14,6 +15,7 @@ def create_app():
         "SQLALCHEMY_DATABASE_URI")
     app.config["SECRET_KEY"] = environ.get("SECRET_KEY")
     app.config["JWT_AUTH_URL_RULE"] = environ.get("JWT_AUTH_URL_RULE")
+    app.config["JWT_AUTH_USERNAME_KEY"] = environ.get("JWT_AUTH_USERNAME_KEY")
 
     db.init_app(app)
 
@@ -23,13 +25,14 @@ def create_app():
         from routes.application_admin import application_admin
         from routes.application_article import application_article
 
-        app.register_blueprint(application_auth, url_prefix="/auth ")
+        app.register_blueprint(application_auth, url_prefix="/auth")
         app.register_blueprint(application_admin, url_prefix="/admin")
         app.register_blueprint(application_article, url_prefix="/article")
 
         db.create_all()  # Create sql tables for our data models
         init_users()
 
+        CORS(app)
         return app
 
 

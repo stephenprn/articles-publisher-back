@@ -50,6 +50,8 @@ def to_json(paginated=False):
 
             if paginated:
                 data = res['data']
+            else:
+                data = res
 
             if isinstance(data, list):
                 data_dict = [elt.to_dict() for elt in data]

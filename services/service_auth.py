@@ -6,14 +6,14 @@ from utils.utils_hash import check_password, hash_password
 from shared.annotations import to_json
 
 
-def authenticate(username: str, password: str):
+def authenticate(email: str, password: str):
     password_hashed = hash_password(password)
 
     user = db.session.query(User).options(load_only(
         'password',
         'salt'
     )).filter_by(
-        username=username
+        email=email
     ).first()
 
     if user == None:

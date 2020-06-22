@@ -1,4 +1,5 @@
 from flask import abort
+from sqlalchemy.orm import load_only
 
 from models.article import Article
 from utils.utils_string import normalize_string
@@ -28,7 +29,7 @@ def get_articles_list(nbr_results: int, page_nbr: int):
         "body",
         "url"
     )).order_by(
-        User.creation_date
+        Article.creation_date
     ).paginate(
         page=page_nbr,
         per_page=nbr_results,
@@ -57,14 +58,13 @@ def get_article(url: str):
 
 
 def generate_unique_url(title: str):
-    url = normalize_string(title, replace_spaces=URL_SEPARATOR)
+    url_base = normalize_string(title, replace_spaces=URL_SEPARATOR)
+    url = url_base
 
     url_index = 0
 
     while db.session.query(Article.id).filter_by(url=url).scalar() is not None:
         url_index += 1
-
-    if url_index != 0:
-        url += URL_SEPARATOR + str(url_index)
+        url = url_base + URL_SEPARATOR + str(url_index)
 
     return url
