@@ -1,10 +1,12 @@
 from flask import abort
-from sqlalchemy.orm import load_only
+from sqlalchemy.orm import load_only, joinedload
 
+from models.user import User
 from models.article import Article
 from utils.utils_string import normalize_string
 from shared.db import db
 from shared.annotations import to_json
+from flask_jwt import current_identity
 
 URL_SEPARATOR = "-"
 MIN_LENGTH_TITLE = 8
@@ -17,6 +19,7 @@ def add_article(title: str, body: str = None):
 
     article = Article(title, body=body)
     article.url = generate_unique_url(title)
+    article.user = current_identity
 
     db.session.add(article)
     db.session.commit()
@@ -24,11 +27,21 @@ def add_article(title: str, body: str = None):
 
 @to_json(paginated=True)
 def get_articles_list(nbr_results: int, page_nbr: int):
-    res = db.session.query(Article).options(load_only(
-        "title",
-        "body",
-        "url"
-    )).order_by(
+    res = db.session.query(
+        Article
+    ).options(
+        joinedload(
+            Article.user
+        ).load_only(
+            "username"
+        ),
+        load_only(
+            "title",
+            "body",
+            "url",
+            "creation_date"
+        )
+    ).order_by(
         Article.creation_date
     ).paginate(
         page=page_nbr,

@@ -1,11 +1,14 @@
 from sqlalchemy import inspect
 from uuid import uuid4
+from sqlalchemy.orm import relationship
 
 from shared.db import db
 from utils import utils_date, utils_hash
 
 
 class User(db.Model):
+    __tablename__ = "user"
+
     id = db.Column(db.Integer, primary_key=True)
     uuid = db.Column(db.String(), unique=True, nullable=False)
 
@@ -14,6 +17,8 @@ class User(db.Model):
 
     password = db.Column(db.VARBINARY(128), nullable=False)
     salt = db.Column(db.VARBINARY(32), nullable=False)
+
+    articles = relationship("Article", back_populates="user")
 
     creation_date = db.Column(
         db.DateTime, default=utils_date.get_current_date(), nullable=False)

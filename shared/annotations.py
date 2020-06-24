@@ -2,7 +2,7 @@ from flask import request, abort
 from json import dumps
 from functools import wraps
 
-from utils.utils_date import datetime_handler
+from utils.utils_json import default_handler
 
 # if nbr_results_default is specified, we try to get nbr_results
 
@@ -59,12 +59,12 @@ def to_json(paginated=False):
                 data_dict = data.to_dict()
 
             if not paginated:
-                return dumps(data_dict, default=datetime_handler)
+                return dumps(data_dict, default=default_handler)
             else:
                 return dumps({
                     'total': res['total'],
                     'data': data_dict
-                }, default=datetime_handler)
+                }, default=default_handler)
 
             return
 
