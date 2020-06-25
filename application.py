@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_cors import CORS
-from os import environ
 from flask_jwt import JWT
+from os import environ
 
 from shared.db import db
 from services.service_admin import init_users

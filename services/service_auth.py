@@ -1,9 +1,53 @@
+from flask import abort
 from sqlalchemy.orm import load_only
+from sqlalchemy import or_
 
 from models.user import User
 from shared.db import db
 from utils.utils_hash import check_password, hash_password
+from utils.utils_string import check_length
 from shared.annotations import to_json
+
+USERNAME_MIN_LENGTH = 8
+USERNAME_MAX_LENGTH = 100
+
+PASSWORD_MIN_LENGTH = 6
+PASSWORD_MAX_LENGTH = 20
+
+
+def register(email: str, username: str, password: str):
+    check_length(password, "Password",
+                 PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH)
+    check_length(username, "Username",
+                 USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH)
+
+    email_exists = db.session.query(User.id).filter(
+        User.email == email).scalar() is not None
+
+    if email_exists:
+        abort(409, 'This email is already registered')
+
+    username_exists = db.session.query(User.id).filter(
+        User.username == username).scalar() is not None
+
+    if username_exists:
+        abort(409, 'This username is already taken')
+
+    user = User(username, email, password)
+
+    db.session.add(user)
+    db.session.commit()
+
+
+def check_username(username: str):
+    username_exists = db.session.query(User.id).filter(
+        User.username == username).scalar() is not None
+
+    if username_exists:
+        abort(409, 'This username is already taken')
+
+
+# flask_jwt functions
 
 
 def authenticate(email: str, password: str):

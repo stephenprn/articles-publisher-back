@@ -54,12 +54,7 @@ class Article(db.Model):
         for rel in state.mapper.relationships:
             key = rel.key
 
-            print(key)
-            print(state.unloaded)
-
             if key not in state.unloaded:
                 res[key] = getattr(self, key).to_dict()
-
-        print(res)
-
+                
         return res

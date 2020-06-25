@@ -3,19 +3,18 @@ from sqlalchemy.orm import load_only, joinedload
 
 from models.user import User
 from models.article import Article
-from utils.utils_string import normalize_string
+from utils.utils_string import normalize_string, check_length
 from shared.db import db
 from shared.annotations import to_json
 from flask_jwt import current_identity
 
 URL_SEPARATOR = "-"
-MIN_LENGTH_TITLE = 8
+TITLE_MIN_LENGTH = 8
+TITLE_MAX_LENGTH = 100
 
 
 def add_article(title: str, body: str = None):
-    if title == None or len(title) < MIN_LENGTH_TITLE:
-        abort(400, "Article title must be at least {} characters long".format(
-            str(MIN_LENGTH_TITLE)))
+    check_length(title, "Article title", TITLE_MIN_LENGTH, TITLE_MAX_LENGTH)
 
     article = Article(title, body=body)
     article.url = generate_unique_url(title)
