@@ -23,6 +23,8 @@ def register():
 
     service_auth.register(email, username, password)
 
+    return dumps(True)
+
 
 # this endpoint will return a 409 code if username is taken, 200 if not
 

@@ -8,7 +8,7 @@ from utils.utils_hash import check_password, hash_password
 from utils.utils_string import check_length
 from shared.annotations import to_json
 
-USERNAME_MIN_LENGTH = 8
+USERNAME_MIN_LENGTH = 4
 USERNAME_MAX_LENGTH = 100
 
 PASSWORD_MIN_LENGTH = 6

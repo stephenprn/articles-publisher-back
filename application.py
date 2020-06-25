@@ -2,6 +2,8 @@ from flask import Flask
 from flask_cors import CORS
 from flask_jwt import JWT
 from os import environ
+from werkzeug.exceptions import HTTPException
+from json import dumps
 
 from shared.db import db
 from services.service_admin import init_users
@@ -38,6 +40,17 @@ def create_app():
 
 app = create_app()
 jwt = JWT(app, authenticate, identity)
+
+
+@app.errorhandler(Exception)
+def handle_error(e):
+    code = 500
+
+    if isinstance(e, HTTPException):
+        code = e.code
+
+    return dumps(str(e.description)), code
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
