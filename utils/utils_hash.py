@@ -31,7 +31,7 @@ def check_password(pw_input: str, salt: str, pw_hashed: str):
         print(e)
     try:
         pw_input_hashed = hashlib.pbkdf2_hmac(
-            algorithm='sha256',
+            'sha256',
             a,
             salt.encode('utf-8'),
             100000
