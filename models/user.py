@@ -1,10 +1,15 @@
 from sqlalchemy import inspect
 from uuid import uuid4
 from sqlalchemy.orm import relationship
+import enum
 
 from shared.db import db
 from utils import utils_date, utils_hash
 
+
+class UserRole(enum.Enum):
+    admin = "admin"
+    user = "user"
 
 class User(db.Model):
     __tablename__ = "user"
@@ -14,18 +19,20 @@ class User(db.Model):
 
     username = db.Column(db.String(20), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
+    role = db.Column(db.Enum(UserRole), nullable=False)
 
     password = db.Column(db.VARBINARY(128), nullable=False)
     salt = db.Column(db.VARBINARY(32), nullable=False)
 
-    articles = relationship("Article", back_populates="user")
+    articles = relationship("Article", back_populates="user", cascade="all, delete-orphan")
 
     creation_date = db.Column(
         db.DateTime, default=utils_date.get_current_date(), nullable=False)
 
-    def __init__(self, username: str, email: str, password: str):
+    def __init__(self, username: str, email: str, password: str, role: UserRole = UserRole.user):
         self.username = username
         self.email = email
+        self.role = role
 
         pw_salt = utils_hash.hash_password(password)
 

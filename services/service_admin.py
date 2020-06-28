@@ -1,17 +1,18 @@
 from sqlalchemy.orm import load_only
 
-from models.user import User
+from models.user import User, UserRole
 from shared.db import db
 from shared.annotations import to_json
 
 
 def init_users():
-    admin_exists = db.session.query(User.id).filter_by(username='admin').scalar() is not None
+    admin_exists = db.session.query(User.id).filter_by(
+        username='admin').scalar() is not None
 
     if admin_exists:
         return
 
-    admin = User('admin', 'admin@admin.com', 'password')
+    admin = User('admin', 'admin@admin.com', 'password', UserRole.admin)
 
     db.session.add(admin)
     db.session.commit()

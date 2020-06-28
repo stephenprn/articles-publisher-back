@@ -48,8 +48,11 @@ def handle_error(e):
 
     if isinstance(e, HTTPException):
         code = e.code
-
-    return dumps(str(e.description)), code
+        
+    try:
+        return dumps(str(e.description)), code
+    except Exception:
+        return dumps(str(e)), code
 
 
 if __name__ == "__main__":

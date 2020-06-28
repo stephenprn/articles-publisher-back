@@ -6,7 +6,7 @@ export FLASK_ENV=development
 export AUTHLIB_INSECURE_TRANSPORT=true
 
 # sqlaclhemy settings
-export SQLALCHEMY_DATABASE_URI=sqlite:///application.db
+export SQLALCHEMY_DATABASE_URI=sqlite:///application.db?check_same_thread=False
 
 # jwt
 export SECRET_KEY=super-secret

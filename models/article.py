@@ -1,5 +1,5 @@
 from sqlalchemy import inspect
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 from uuid import uuid4
 
 from shared.db import db
@@ -16,8 +16,10 @@ class Article(db.Model):
     body = db.Column(db.Text)
     url = db.Column(db.String(100), unique=True, nullable=False)
 
+    nbr_views = db.Column(db.Integer, nullable=False)
+
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    user = relationship("User", back_populates="articles")
+    user = relationship("User", backref=backref("articles", cascade="all,delete"))
 
     creation_date = db.Column(
         db.DateTime, default=utils_date.get_current_date(), nullable=False)
@@ -26,6 +28,7 @@ class Article(db.Model):
         self.title = title
         self.body = body
         self.uuid = str(uuid4())
+        self.nbr_views = 0
 
     def __repr__(self):
         state = inspect(self)
@@ -56,5 +59,5 @@ class Article(db.Model):
 
             if key not in state.unloaded:
                 res[key] = getattr(self, key).to_dict()
-                
+
         return res
