@@ -21,8 +21,8 @@ class User(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     role = db.Column(db.Enum(UserRole), nullable=False)
 
-    password = db.Column(db.VARBINARY(128), nullable=False)
-    salt = db.Column(db.VARBINARY(32), nullable=False)
+    password = db.Column(db.String(128), nullable=False)
+    salt = db.Column(db.String(128), nullable=False)
 
     articles = relationship("Article", back_populates="user", cascade="all, delete-orphan")
 
