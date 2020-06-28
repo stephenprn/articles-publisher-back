@@ -45,6 +45,7 @@ jwt = JWT(app, authenticate, identity)
 @app.errorhandler(Exception)
 def handle_error(e):
     code = 500
+    print(e)
 
     if isinstance(e, HTTPException):
         code = e.code
