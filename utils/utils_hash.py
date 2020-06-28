@@ -31,9 +31,9 @@ def check_password(pw_input: str, salt: str, pw_hashed: str):
         print(e)
     try:
         pw_input_hashed = hashlib.pbkdf2_hmac(
-            'sha256',
+            algorithm='sha256',
             a,
-            salt,
+            salt.encode('utf-8'),
             100000
         )
     except Exception as e:
