@@ -21,6 +21,9 @@ def hash_password(password: str):
 
 
 def check_password(pw_input: str, salt: bytes, pw_hashed: bytes):
+    print(type(pw_input))
+    print(type(salt))
+    print(type(pw_hashed))
     pw_input_hashed = b64encode(hashlib.pbkdf2_hmac(
         'sha256',
         pw_input.encode('utf-8'),  # Convert the password to bytes
