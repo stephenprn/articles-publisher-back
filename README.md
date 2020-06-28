@@ -2,6 +2,20 @@
 Skeleton universal project (back-end) including:
 - OAuth2 authentication
 
+## Heroku commands
+
+### Deploy
+
+```
+$ git add .
+$ git commit -am "make it better"
+$ git push heroku master
+```
+### Cancel current build
+```
+heroku builds:cancel
+```
+
 ## Commands
 - Create venv
 ```
