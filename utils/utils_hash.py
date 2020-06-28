@@ -24,6 +24,15 @@ def check_password(pw_input: str, salt: str, pw_hashed: str):
     print(pw_input)
     print("pw_hashed")
     print(pw_hashed)
+    try:
+        pw_input_hashed = b64encode(hashlib.pbkdf2_hmac(
+            'sha256',
+            pw_input.encode('utf-8'),  # Convert the password to bytes
+            salt,
+            100000
+        ))
+    except Exception as e:
+        print(e)
     pw_input_hashed = b64encode(hashlib.pbkdf2_hmac(
         'sha256',
         pw_input.encode('utf-8'),  # Convert the password to bytes
