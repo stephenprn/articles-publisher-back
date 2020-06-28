@@ -9,6 +9,7 @@ def generate_random_salt():
 
 def hash_password(password: str):
     salt = b64encode(generate_random_salt())
+
     password_hashed = b64encode(hashlib.pbkdf2_hmac(
         'sha256',
         password.encode('utf-8'),
@@ -19,11 +20,11 @@ def hash_password(password: str):
     return (password_hashed, salt)
 
 
-def check_password(pw_input: str, salt: str, pw_hashed: str):
+def check_password(pw_input: str, salt: bytes, pw_hashed: bytes):
     pw_input_hashed = b64encode(hashlib.pbkdf2_hmac(
         'sha256',
         pw_input.encode('utf-8'),  # Convert the password to bytes
-        salt.encode('utf-8'),
+        salt,
         100000
     ))
 
