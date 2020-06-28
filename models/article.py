@@ -1,5 +1,5 @@
 from sqlalchemy import inspect
-from sqlalchemy.orm import relationship, backref
+from sqlalchemy.orm import relationship
 from uuid import uuid4
 
 from shared.db import db
@@ -19,7 +19,7 @@ class Article(db.Model):
     nbr_views = db.Column(db.Integer, nullable=False)
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    user = relationship("User", backref=backref("articles", cascade="all,delete"))
+    user = relationship("User", back_populates="articles")
 
     creation_date = db.Column(
         db.DateTime, default=utils_date.get_current_date(), nullable=False)
