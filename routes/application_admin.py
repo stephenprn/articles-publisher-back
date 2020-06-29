@@ -6,7 +6,6 @@ from shared.annotations import pagination
 
 application_admin = Blueprint("application_admin", __name__)
 
-
 @application_admin.route("/")
 def hello():
     return "hello admin"

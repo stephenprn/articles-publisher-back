@@ -21,6 +21,8 @@ def register(email: str, username: str, password: str):
     check_length(username, "Username",
                  USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH)
 
+    email = email.lower()
+
     email_exists = db.session.query(User.id).filter(
         User.email == email).scalar() is not None
 
@@ -52,6 +54,7 @@ def check_username(username: str):
 
 def authenticate(email: str, password: str):
     password_hashed = hash_password(password)
+    email = email.lower()
 
     user = db.session.query(User).options(load_only(
         'password',

@@ -11,6 +11,7 @@ class UserRole(enum.Enum):
     admin = "admin"
     user = "user"
 
+
 class User(db.Model):
     __tablename__ = "user"
 
@@ -24,7 +25,8 @@ class User(db.Model):
     password = db.Column(db.String(128), nullable=False)
     salt = db.Column(db.String(128), nullable=False)
 
-    articles = relationship("Article", back_populates="user", cascade="all, delete-orphan")
+    articles = relationship(
+        "Article", back_populates="user", cascade="all, delete-orphan")
 
     creation_date = db.Column(
         db.DateTime, default=utils_date.get_current_date(), nullable=False)

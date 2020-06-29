@@ -1,9 +1,11 @@
 from flask import Flask
 from flask_cors import CORS
 from flask_jwt import JWT
+
 from os import environ
 from werkzeug.exceptions import HTTPException
 from json import dumps
+from dotenv import load_dotenv
 
 from shared.db import db
 from services.service_admin import init_users
@@ -11,6 +13,9 @@ from services.service_auth import authenticate, identity
 
 
 def create_app():
+    """Load env parameters"""
+    load_dotenv()
+
     """Construct the core application."""
     app = Flask(__name__)
     app.config["SQLALCHEMY_DATABASE_URI"] = environ.get(

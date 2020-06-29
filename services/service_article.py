@@ -19,12 +19,11 @@ def add_article(title: str, body: str):
     check_length(title, "Article title", TITLE_MIN_LENGTH, TITLE_MAX_LENGTH)
 
     article = Article(title, body=body)
-    article.url = generate_unique_url(title)
+    article.url = __generate_unique_url(title)
     article.user = current_identity
 
     db.session.add(article)
     db.session.commit()
-
 
 def update_article(title: str, body: str, url: str):
     check_length(title, "Article title", TITLE_MIN_LENGTH, TITLE_MAX_LENGTH)
@@ -177,7 +176,7 @@ def delete_article(url: str):
     db.session.commit()
 
 
-def generate_unique_url(title: str):
+def __generate_unique_url(title: str):
     url_base = normalize_string(title, replace_spaces=URL_SEPARATOR)
     url = url_base
 
