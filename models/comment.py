@@ -6,32 +6,26 @@ from shared.db import db
 from utils import utils_date, utils_hash
 
 
-class Article(db.Model):
-    __tablename__ = 'article'
+class Comment(db.Model):
+    __tablename__ = 'comment'
 
     id = db.Column(db.Integer, primary_key=True)
     uuid = db.Column(db.String(), unique=True, nullable=False)
 
-    title = db.Column(db.String(100), nullable=False)
     body = db.Column(db.Text)
-    url = db.Column(db.String(100), unique=True, nullable=False)
 
-    nbr_views = db.Column(db.Integer, nullable=False)
+    article_id = db.Column(db.Integer, db.ForeignKey('article.id'))
+    article = relationship("Article", back_populates="comments")
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    user = relationship("User", back_populates="articles")
-
-    comments = relationship(
-        "Comment", back_populates="article", cascade="all, delete-orphan")
+    user = relationship("User", back_populates="comments")
 
     creation_date = db.Column(
         db.DateTime, default=utils_date.get_current_date(), nullable=False)
 
-    def __init__(self, title: str, body: str):
-        self.title = title
+    def __init__(self, body: str):
         self.body = body
         self.uuid = str(uuid4())
-        self.nbr_views = 0
 
     def __repr__(self):
         state = inspect(self)
@@ -43,7 +37,7 @@ class Article(db.Model):
 
         attrs = " ".join([f"{attr.key}={ga(attr.key)}"
                           for attr in state.attrs])
-        return f"<Article {attrs}>"
+        return f"<Comment {attrs}>"
 
     def to_dict(self):
         state = inspect(self)

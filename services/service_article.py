@@ -2,7 +2,6 @@ from flask import abort
 from flask_jwt import current_identity
 from sqlalchemy.orm import load_only, joinedload
 from sqlalchemy import desc
-import threading
 
 from models.user import User
 from models.article import Article

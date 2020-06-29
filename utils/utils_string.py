@@ -28,15 +28,15 @@ def normalize_string(text: str, replace_spaces: str = " "):
 def check_length(text: str, name: str, min_length: int, max_length: int = None):
     if text == None:
         abort(400, "{} must be specified".format(
-            name, str(MIN_LENGTH_TITLE)))
+            name, str(min_length)))
 
     if len(text) < min_length:
         abort(400, "{} must be at least {} characters long".format(
-            name, str(MIN_LENGTH_TITLE)))
+            name, str(min_length)))
 
     if max_length != None and len(text) > max_length:
         abort(400, "{} must be no more than {} characters long".format(
-            name, str(MIN_LENGTH_TITLE)))
+            name, str(min_length)))
 
 
 if __name__ == "__main__":

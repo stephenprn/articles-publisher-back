@@ -27,6 +27,8 @@ class User(db.Model):
 
     articles = relationship(
         "Article", back_populates="user", cascade="all, delete-orphan")
+    comments = relationship(
+        "Comment", back_populates="user", cascade="all, delete-orphan")
 
     creation_date = db.Column(
         db.DateTime, default=utils_date.get_current_date(), nullable=False)

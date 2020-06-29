@@ -29,12 +29,12 @@ def create_app():
     with app.app_context():
         # blueprints init
         from routes.application_auth import application_auth
-        from routes.application_admin import application_admin
         from routes.application_article import application_article
+        from routes.application_comment import application_comment
 
         app.register_blueprint(application_auth, url_prefix="/auth")
-        app.register_blueprint(application_admin, url_prefix="/admin")
         app.register_blueprint(application_article, url_prefix="/article")
+        app.register_blueprint(application_comment, url_prefix="/comment")
 
         db.create_all()  # Create sql tables for our data models
         init_users()
@@ -54,7 +54,7 @@ def handle_error(e):
 
     if isinstance(e, HTTPException):
         code = e.code
-        
+
     try:
         return dumps(str(e.description)), code
     except Exception:
