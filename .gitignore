@@ -1,5 +1,5 @@
-./application.db
-./env_variables.sh
+application.db
+.env
 __pycache__/ 
 venv/*
 *.pyc
