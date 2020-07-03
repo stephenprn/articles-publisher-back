@@ -1,6 +1,7 @@
-# Skeleton-back
-Skeleton universal project (back-end) including:
-- OAuth2 authentication
+# Articles publisher
+Articles publisher (back-end) including:
+- JWT authentication
+- Interaction with postgres db through SQLAlchemy
 
 ## Heroku commands
 
