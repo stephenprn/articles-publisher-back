@@ -16,7 +16,7 @@ httplib2==0.18.1
 idna==2.9
 importlib-metadata==1.6.1
 itsdangerous==1.1.0
-Jinja2==2.11.2
+Jinja2==2.11.3
 limits==1.5.1
 MarkupSafe==1.1.1
 psycopg2-binary==2.8.5
